@@ -1,11 +1,20 @@
 # fullsend-skill
 
-The `/fullsend` skill for Claude Code — harness validation, drift checking, sandbox debugging, agent triggering, run inspection, and upgrade management.
+The `/fullsend` skill for Claude Code — validate and debug Fullsend configuration,
+trigger and inspect agent runs, browse transcript history, and manage upgrades.
 
 ## Install
 
 ```bash
 npx skills add fullsend-ai/skill
+```
+
+Then invoke the skill from any repository:
+
+```text
+/fullsend
+/fullsend inspect 123456789
+/fullsend runs setup
 ```
 
 ## Commands
@@ -31,3 +40,34 @@ npx skills add fullsend-ai/skill
 ```
 
 Run `/fullsend` with no arguments for the command menu.
+
+## AgentsView transcript history
+
+`/fullsend runs setup` installs the bundled AgentsView integration into the current
+repository. The integration can fetch GitHub Actions artifacts, reconstruct Fullsend
+execution context, preserve nested subagent sessions, import local runs, and start a
+containerized transcript viewer.
+
+Run data is shared across repositories by default:
+
+```text
+${XDG_CACHE_HOME:-$HOME/.cache}/fullsend/agentsview/
+├── artifacts/   # downloaded artifact ZIPs, workflow logs, revision context
+├── runs/        # converted remote sessions
+└── runs-local/  # imported local sessions
+```
+
+This keeps generated history out of whichever repository installed the skill. Override
+the cache root when isolation is useful:
+
+```bash
+cd agentsview
+FULLSEND_AGENTSVIEW_CACHE_DIR="$HOME/.cache/my-team/fullsend" make fetch
+```
+
+Advanced overrides are also available: `ARTIFACTS_DIR`, `RUNS_DIR`, and
+`RUNS_LOCAL_DIR`. Run `make paths` inside `agentsview/` to see the resolved locations.
+
+Repository-local caches created by older versions are not deleted. To continue using
+one, set `FULLSEND_AGENTSVIEW_CACHE_DIR="$PWD"` while inside that repository's
+`agentsview/` directory.

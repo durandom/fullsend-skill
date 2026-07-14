@@ -17,9 +17,9 @@ set -euo pipefail
 #
 # Prerequisites: jq, unzip
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ARTIFACTS_DIR="${ARTIFACTS_DIR:-${SCRIPT_DIR}/../artifacts}"
-RUNS_DIR="${RUNS_DIR:-${SCRIPT_DIR}/../runs}"
+CACHE_ROOT="${FULLSEND_AGENTSVIEW_CACHE_DIR:-${XDG_CACHE_HOME:-${HOME}/.cache}/fullsend/agentsview}"
+ARTIFACTS_DIR="${ARTIFACTS_DIR:-${CACHE_ROOT}/artifacts}"
+RUNS_DIR="${RUNS_DIR:-${CACHE_ROOT}/runs}"
 
 usage() {
   cat <<'EOF'
@@ -34,8 +34,9 @@ Options:
   -h, --help        Show this help
 
 Environment:
-  ARTIFACTS_DIR  Artifact cache directory (default: ../artifacts)
-  RUNS_DIR       Session output directory (default: ../runs)
+  FULLSEND_AGENTSVIEW_CACHE_DIR  Cache root (default: $XDG_CACHE_HOME/fullsend/agentsview)
+  ARTIFACTS_DIR                  Artifact cache override
+  RUNS_DIR                       Session output override
 EOF
 }
 

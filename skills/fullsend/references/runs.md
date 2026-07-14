@@ -47,12 +47,12 @@ If no subcommand is given, check:
 1. Does `agentsview/` contain `Makefile`, `docker-compose.fullsend.yaml`, and the
    three scripts documented below? If not, report that setup is required and offer
    `/fullsend runs setup`. Do not create an empty directory.
-2. Does `agentsview/runs/` or `agentsview/runs-local/` contain any `.jsonl` files? Report the count and project breakdown for each.
-3. Is a container running? Check with:
+2. Resolve the shared data directories, then report the `.jsonl` count and project
+   breakdown for `RUNS_DIR` and `RUNS_LOCAL_DIR`:
    ```bash
-   podman compose -f agentsview/docker-compose.fullsend.yaml ps 2>/dev/null || \
-   docker compose -f agentsview/docker-compose.fullsend.yaml ps 2>/dev/null
+   make -s -C agentsview paths
    ```
+3. Check the container with `make -C agentsview status`.
 4. Print the URL if running.
 
 ### setup
@@ -71,8 +71,27 @@ If managed files already exist and differ, show the conflicting paths. Re-run wi
 bash <fullsend-skill-dir>/scripts/setup-agentsview.sh --force ./agentsview
 ```
 
-The helper copies only maintained distribution files. It preserves `.env`,
-`artifacts/`, `runs/`, and `runs-local/`.
+The helper copies only maintained distribution files. It does not touch the shared
+XDG cache, `.env`, or legacy repository-local cache directories.
+
+### Cache locations
+
+Default all generated data to:
+
+```text
+${XDG_CACHE_HOME:-$HOME/.cache}/fullsend/agentsview/
+├── artifacts/
+├── runs/
+└── runs-local/
+```
+
+This cache is independent of the repository containing `agentsview/`, so installing
+the skill in multiple repositories reuses downloaded and converted history. Override
+the root with `FULLSEND_AGENTSVIEW_CACHE_DIR`; use `ARTIFACTS_DIR`, `RUNS_DIR`, or
+`RUNS_LOCAL_DIR` only when one part needs a distinct location.
+
+Legacy repository-local directories remain untouched. From an older `agentsview/`
+directory, set `FULLSEND_AGENTSVIEW_CACHE_DIR="$PWD"` to keep using them.
 
 ### fetch
 
@@ -83,13 +102,13 @@ cd agentsview && make fetch
 
 The two-phase pipeline:
 - Queries exact fullsend artifact names instead of enumerating unrelated artifacts
-- Caches ZIPs, selected workflow job logs, and run metadata under `artifacts/<repo>/`
+- Caches ZIPs, selected workflow job logs, and run metadata under `$ARTIFACTS_DIR/<repo>/`
 - Caches agent configuration and project instructions at the workflow's exact Git revision
 - Skips already-downloaded artifacts and converted sessions (idempotent)
 - Extracts main and subagent transcripts into the native nested layout
 - Injects metadata header (`agent entity #N - run ID [conclusion · cost · duration · turns]`)
 - Reconstructs a Fullsend execution-context message from immutable run provenance and Claude runtime metadata
-- Organizes into `runs/<repo>/` directories
+- Organizes converted sessions under `$RUNS_DIR/<repo>/`
 
 Custom repos can be passed as arguments:
 ```bash
@@ -109,7 +128,7 @@ custom agents with `FULLSEND_ARTIFACT_NAMES="fullsend-code fullsend-my-agent"`.
 `fetch-artifacts.sh` downloads the workflow job log and records the run's target
 commit, selected job, and exact Fullsend configuration paths. It caches the agent
 definition, harness, policy, `CLAUDE.md`, and `AGENTS.md` from that immutable commit
-under `artifacts/<repo>/revisions/<head-sha>/`.
+under `$ARTIFACTS_DIR/<repo>/revisions/<head-sha>/`.
 
 `convert-artifacts.sh` combines those files with the Claude `system/init` record from
 the artifact's `output.jsonl`. The resulting synthetic first message shows:
@@ -177,32 +196,23 @@ cd agentsview && make down
 ## Architecture
 
 ```
-GitHub Actions artifacts (fullsend-*)       Local fullsend runs (--output-dir)
-  │                                           │
-  ▼  fetch-artifacts.sh                       ▼  import-local-run.sh
-agentsview/artifacts/<repo>/
-  │  cached ZIP + metadata + workflow log + revision-pinned context
-  ▼  convert-artifacts.sh
-  │  + execution-context reconstruction        │
-  ▼                                           ▼
-agentsview/runs/                            agentsview/runs-local/
-  rhdh-plugins/*.jsonl                        local_triage/*.jsonl
-  rhdh-agentic/*.jsonl                        local_my-prs/*.jsonl
-  │                                           │
-  │  (make up)                                │  (make local)
-  ▼                                           ▼
-docker-compose.fullsend.yaml
-  AGENTSVIEW_RUNS=./runs (default)    or    AGENTSVIEW_RUNS=./runs-local
-  │
-  ▼
-AgentsView container
-  → http://<hostname>:8081
-  → FTS search, analytics, cost tracking
+GitHub Actions artifacts                  Local fullsend output
+  │ fetch-artifacts.sh                      │ import-local-run.sh
+  ▼                                         ▼
+$CACHE/artifacts/<repo>/                 $CACHE/runs-local/
+  │ convert-artifacts.sh                    │
+  ▼                                         │
+$CACHE/runs/<repo>/                         │
+  └──────────────────┬──────────────────────┘
+                     ▼
+           AgentsView container
+           → http://<hostname>:8081
 ```
 
 Data flow:
-- **Remote runs** go to `runs/`, **local runs** go to `runs-local/` — kept separate so `make local` shows only local sessions
-- **Artifact cache** lives in `artifacts/`, so conversion can be rerun without downloading from GitHub again
+- **Cache root** defaults to `${XDG_CACHE_HOME:-$HOME/.cache}/fullsend/agentsview`
+- **Remote and local sessions stay separate**, so `make local` shows only local sessions
+- **Artifact ZIPs and context are cached**, so conversion can be rerun without downloading again
 - **Index**: SQLite + FTS5 in a Docker volume, cleared on `make down` (`-v`) and rebuilt on next start
 - **GitHub artifacts expire after 90 days** — once downloaded, local copies persist
 
@@ -218,7 +228,7 @@ In the AgentsView UI:
 
 Report:
 
-- the action performed and the `agentsview/` path used
+- the action performed, integration path, and resolved XDG cache paths
 - fetched, converted, imported, or cached counts printed by the scripts
 - the repository/project groups available
 - the viewer URL when it is running

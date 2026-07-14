@@ -12,12 +12,12 @@ Arguments:
   target-dir  Destination directory (default: ./agentsview)
 
 Options:
-  --force     Replace managed files that differ; preserve artifacts and runs
+  --force     Replace managed files that differ; preserve cached run data
   -h, --help  Show this help
 
 The command is idempotent. Without --force, it refuses to overwrite modified
-managed files. Generated artifacts/, runs/, runs-local/, and .env are never
-copied or removed.
+managed files. Cached data under $XDG_CACHE_HOME and legacy repository-local
+artifacts/, runs/, runs-local/, and .env are never copied or removed.
 EOF
 }
 
@@ -108,5 +108,6 @@ for relative_path in "${FILES[@]}"; do
 done
 
 echo "AgentsView integration ready in $TARGET_DIR ($installed installed, $unchanged unchanged)."
+echo "Cache: ${FULLSEND_AGENTSVIEW_CACHE_DIR:-${XDG_CACHE_HOME:-${HOME}/.cache}/fullsend/agentsview}"
 echo "Next: cd $TARGET_DIR && make fetch   # download and convert remote runs"
 echo "      cd $TARGET_DIR && make local   # import local runs and start the viewer"

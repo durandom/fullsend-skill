@@ -18,8 +18,8 @@ set -euo pipefail
 #
 # Prerequisites: gh (authenticated), jq, curl
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ARTIFACTS_DIR="${ARTIFACTS_DIR:-${SCRIPT_DIR}/../artifacts}"
+CACHE_ROOT="${FULLSEND_AGENTSVIEW_CACHE_DIR:-${XDG_CACHE_HOME:-${HOME}/.cache}/fullsend/agentsview}"
+ARTIFACTS_DIR="${ARTIFACTS_DIR:-${CACHE_ROOT}/artifacts}"
 
 usage() {
   cat <<'EOF'
@@ -35,7 +35,8 @@ Options:
   -h, --help    Show this help
 
 Environment:
-  ARTIFACTS_DIR            Cache directory (default: ../artifacts)
+  FULLSEND_AGENTSVIEW_CACHE_DIR  Cache root (default: $XDG_CACHE_HOME/fullsend/agentsview)
+  ARTIFACTS_DIR                  Artifact cache override
   FULLSEND_ARTIFACT_NAMES  Space-separated exact artifact names
 EOF
 }

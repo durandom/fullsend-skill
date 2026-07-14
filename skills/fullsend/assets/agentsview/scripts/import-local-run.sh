@@ -17,8 +17,8 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-RUNS_DIR="${RUNS_DIR:-${SCRIPT_DIR}/../runs-local}"
+CACHE_ROOT="${FULLSEND_AGENTSVIEW_CACHE_DIR:-${XDG_CACHE_HOME:-${HOME}/.cache}/fullsend/agentsview}"
+RUNS_DIR="${RUNS_DIR:-${CACHE_ROOT}/runs-local}"
 
 usage() {
   cat <<'EOF'
@@ -31,7 +31,8 @@ With no path, search $TMPDIR/fullsend and /tmp/fullsend. Pass either a Fullsend
 output directory containing agent-* children or one agent-* run directory.
 
 Environment:
-  RUNS_DIR  Session output directory (default: ../runs-local)
+  FULLSEND_AGENTSVIEW_CACHE_DIR  Cache root (default: $XDG_CACHE_HOME/fullsend/agentsview)
+  RUNS_DIR                       Session output override
 EOF
 }
 
