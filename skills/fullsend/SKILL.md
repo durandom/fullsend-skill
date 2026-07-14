@@ -1,24 +1,15 @@
 ---
 name: fullsend
 description: |
-  Fullsend harness validation, drift checking, sandbox debugging, and fullsend setup.
-  Use when asked to validate fullsend config, check for drift against upstream scaffold,
-  diff or compare customized harness/env files against upstream, debug a sandbox run,
-  inspect a fullsend agent run, or look at a specific run by ID or issue number.
-  Also use when asked why a fullsend run failed, what changed in the harness, or how
-  to set up env vars for the sandbox.
-  Also use when asked to trigger a fullsend agent, post a slash command on an issue,
-  watch or monitor a fullsend run, comment on an issue, or manage labels.
-  Also use when asked to run sandbox diagnostics, debug the sandbox environment,
-  check if yarn/corepack/openspec work, or build a custom fullsend agent.
-  Also use when asked what fullsend agents are, how they work, how to use them,
-  what agents are available, how to get started with fullsend, or how the local
-  deployment is configured.
-  Also use when asked to browse, view, or search fullsend runs in AgentsView,
-  download run transcripts, start or stop the AgentsView viewer, or check
-  agent run history.
-  Also use when asked to upgrade fullsend, sync scaffold files with a new
-  version, update the CLI, bump fullsend, or check what version we're on.
+  Manages Fullsend configuration and agent workflows: validates customized harness
+  and env files against the upstream scaffold, checks drift, debugs sandboxes,
+  inspects run status and logs, triggers and watches agents, manages related GitHub
+  comments and labels, explains setup and custom agents, browses transcripts in
+  AgentsView, and upgrades Fullsend. Use when asked to validate or compare Fullsend
+  configuration; diagnose failed runs, credentials, env delivery, yarn/corepack,
+  OpenSpec, network, or OpenShell behavior; inspect, trigger, or monitor `/fs-*` agents; manage
+  related issues or PRs; understand or build Fullsend agents; install, start, stop,
+  fetch, import, or search AgentsView run history; or upgrade the CLI and scaffold.
 ---
 
 # /fullsend
@@ -82,7 +73,7 @@ To add a variable, create an env file and wire it via `host_files` in the harnes
 |------|-------------|-------|---------|
 | Scaffold dir | `validate` | `$FULLSEND_SCAFFOLD_DIR` or `../asdlc-lab/resources/fullsend-ai/fullsend/internal/scaffold/fullsend-repo/` is a readable directory | Ask user to set `FULLSEND_SCAFFOLD_DIR` or clone `asdlc-lab` |
 | Target repo | all commands | Repo resolution (see above) | Ask user for the repo |
-| `gh` CLI | `inspect`, `trigger`, `watch`, `comment`, `label` | `gh auth status` succeeds | Ask user to install and authenticate `gh` |
+| `gh` CLI | `inspect`, `trigger`, `watch`, `comment`, `label`, remote `runs` | `gh auth status` succeeds | Ask user to install and authenticate `gh` |
 
 </setup>
 
@@ -99,7 +90,7 @@ To add a variable, create an env file and wire it via `host_files` in the harnes
 | `debug <#issue> [--repo]` | Run sandbox diagnostics (shortcut for `trigger debug`) |
 | `comment <#issue> <message> [--repo]` | Post a comment on an issue or PR |
 | `label <#issue> <add\|remove> <label> [--repo]` | Add or remove a label on an issue or PR |
-| `runs [fetch\|up\|down]` | Browse fullsend runs in AgentsView — fetch transcripts, start/stop viewer |
+| `runs [setup\|fetch\|up\|local\|viewer\|down]` | Browse fullsend runs in AgentsView — install integration, fetch transcripts, start/stop viewer |
 | `upgrade [version]` | Upgrade CLI, scaffold files, and dispatch workflows to a new fullsend release |
 | `help [topic]` | Onboarding companion — agent pipeline, local deployment overview, upstream docs |
 | `custom-agents` | Guide for building custom standalone agents (scaffold, dispatch, security) |

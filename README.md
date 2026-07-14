@@ -19,7 +19,7 @@ npx skills add fullsend-ai/skill
 | `debug` | Run sandbox diagnostics |
 | `comment` | Post a comment on an issue or PR |
 | `label` | Add or remove a label on an issue or PR |
-| `runs` | Browse fullsend runs in AgentsView |
+| `runs` | Install AgentsView integration and browse local or remote fullsend runs |
 | `upgrade` | Upgrade CLI, scaffold files, and dispatch workflows |
 | `help` | Onboarding companion — agent pipeline, local deployment overview |
 | `custom-agents` | Guide for building custom standalone agents |

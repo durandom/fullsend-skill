@@ -163,6 +163,9 @@ Output: `/tmp/fullsend/agent-<type>-*/iteration-*/output/agent-result.json`
 
 After running an agent locally, import the output into AgentsView:
 
+If the repository does not yet contain the bundled integration, run
+`/fullsend runs setup` first.
+
 ```bash
 cd agentsview && make local                                  # auto-discovers from $TMPDIR/fullsend
 cd agentsview && make local DIR=/tmp/fullsend/agent-triage-3705-1234567890  # single run

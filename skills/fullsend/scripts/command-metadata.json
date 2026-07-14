@@ -12,7 +12,7 @@
     "argumentHint": "<agent> <#issue|#PR> [--repo owner/name] [--force]"
   },
   "debug": {
-    "description": "Run sandbox environment diagnostics — checks env vars, corepack, yarn, proxy, network, filesystem, and GCP credentials. Posts results as a comment on the issue. Also documents the custom agent architecture for building new agents.",
+    "description": "Run sandbox environment diagnostics — checks env vars, corepack, yarn, proxy, network, filesystem, and GCP credentials. Posts results as a comment on the issue.",
     "argumentHint": "<#issue> [--repo owner/name]"
   },
   "watch": {
@@ -26,5 +26,21 @@
   "label": {
     "description": "Add or remove a label on a GitHub issue or PR. Use when managing fullsend labels like triaged, ready-to-code, fullsend-no-fix, or workspace labels.",
     "argumentHint": "<#issue> <add|remove> <label> [--repo owner/name]"
+  },
+  "runs": {
+    "description": "Install or update the bundled AgentsView integration, fetch and convert fullsend run transcripts, import local runs, or start and stop the transcript viewer. Use when browsing, searching, or analyzing fullsend run history.",
+    "argumentHint": "[setup|fetch|up|local|viewer|down] [args]"
+  },
+  "upgrade": {
+    "description": "Upgrade Fullsend to a target release by updating the CLI, syncing scaffold-managed files, and checking customized files for drift. Use when bumping Fullsend or checking upgrade impact.",
+    "argumentHint": "[version]"
+  },
+  "help": {
+    "description": "Explain the Fullsend agent pipeline, available agents, local deployment, and common onboarding workflows. Use when learning how Fullsend works or getting started.",
+    "argumentHint": "[topic]"
+  },
+  "custom-agents": {
+    "description": "Guide the creation of a custom standalone Fullsend agent, including scaffold, dispatch, harness, policy, and security wiring. Use when building or extending Fullsend agents.",
+    "argumentHint": "[agent name or goal]"
   }
 }
