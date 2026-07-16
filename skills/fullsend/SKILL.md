@@ -4,12 +4,12 @@ description: |
   Manages Fullsend configuration and agent workflows: validates customized harness
   and env files against the upstream scaffold, checks drift, debugs sandboxes,
   inspects run status and logs, triggers and watches agents, manages related GitHub
-  comments and labels, explains setup and custom agents, browses transcripts in
-  AgentsView, and upgrades Fullsend. Use when asked to validate or compare Fullsend
-  configuration; diagnose failed runs, credentials, env delivery, yarn/corepack,
+  comments and labels, explains setup and custom agents, and upgrades Fullsend. Use
+  when asked to validate or compare Fullsend configuration; diagnose failed runs,
+  credentials, env delivery, yarn/corepack,
   OpenSpec, network, or OpenShell behavior; inspect, trigger, or monitor `/fs-*` agents; manage
-  related issues or PRs; understand or build Fullsend agents; install, start, stop,
-  fetch, import, or search AgentsView run history; or upgrade the CLI and scaffold.
+  related issues or PRs; understand or build Fullsend agents; or upgrade the CLI
+  and scaffold.
 ---
 
 # /fullsend
@@ -73,7 +73,7 @@ To add a variable, create an env file and wire it via `host_files` in the harnes
 |------|-------------|-------|---------|
 | Scaffold dir | `validate` | `$FULLSEND_SCAFFOLD_DIR` or `../asdlc-lab/resources/fullsend-ai/fullsend/internal/scaffold/fullsend-repo/` is a readable directory | Ask user to set `FULLSEND_SCAFFOLD_DIR` or clone `asdlc-lab` |
 | Target repo | all commands | Repo resolution (see above) | Ask user for the repo |
-| `gh` CLI | `inspect`, `trigger`, `watch`, `comment`, `label`, remote `runs` | `gh auth status` succeeds | Ask user to install and authenticate `gh` |
+| `gh` CLI | `inspect`, `trigger`, `watch`, `comment`, `label` | `gh auth status` succeeds | Ask user to install and authenticate `gh` |
 
 </setup>
 
@@ -90,7 +90,6 @@ To add a variable, create an env file and wire it via `host_files` in the harnes
 | `debug <#issue> [--repo]` | Run sandbox diagnostics (shortcut for `trigger debug`) |
 | `comment <#issue> <message> [--repo]` | Post a comment on an issue or PR |
 | `label <#issue> <add\|remove> <label> [--repo]` | Add or remove a label on an issue or PR |
-| `runs [setup\|fetch\|up\|local\|viewer\|down]` | Browse fullsend runs in AgentsView — install integration, fetch transcripts, start/stop viewer |
 | `upgrade [version]` | Upgrade CLI, scaffold files, and dispatch workflows to a new fullsend release |
 | `help [topic]` | Onboarding companion — agent pipeline, local deployment overview, upstream docs |
 | `custom-agents` | Guide for building custom standalone agents (scaffold, dispatch, security) |
@@ -114,12 +113,30 @@ Parse the first word after `/fullsend` as the subcommand.
 | `debug` | `references/debug.md` |
 | `comment` | `references/comment.md` |
 | `label` | `references/label.md` |
-| `runs` | `references/runs.md` |
 | `upgrade` | `references/upgrade.md` |
 | `help` | `references/help.md` |
 | `custom-agents` | `references/custom-agents.md` |
 
 </routing>
+
+<session_history>
+
+## Fullsend Session History
+
+Importing Fullsend session artifacts and visualizing them in AgentsView is provided
+by the separate [`fs-sessions` and `agentsview` skills](https://github.com/durandom/fullsend-sessions).
+This skill does not bundle transcript converters or an AgentsView deployment.
+
+Install the session skills globally for Claude Code and Codex:
+
+```bash
+npx skills add -g git@github.com:durandom/fullsend-sessions.git \
+  --skill fs-sessions agentsview \
+  --agent claude-code codex \
+  --copy -y
+```
+
+</session_history>
 
 <troubleshooting>
 
