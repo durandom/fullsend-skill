@@ -8,7 +8,9 @@ Standalone packaging of the `/fullsend` agent skill for Claude Code.
   - `SKILL.md` — skill definition (routing, essential principles, troubleshooting)
   - `references/` — per-command reference docs (validate, inspect, trigger, watch, etc.)
   - `scripts/` — command metadata and helper scripts
-  - `assets/agentsview/` — installable AgentsView integration and transcript converters
+
+Fullsend session importing and AgentsView visualization are maintained separately at
+https://github.com/durandom/fullsend-sessions.
 
 ## Conventions
 

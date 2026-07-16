@@ -159,20 +159,12 @@ less /tmp/fullsend/agent-*/logs/openshell-sandbox.log
 
 Output: `/tmp/fullsend/agent-<type>-*/iteration-*/output/agent-result.json`
 
-### 8. Viewing local runs in AgentsView
+### 8. Session history and AgentsView
 
-After running an agent locally, import the output into AgentsView:
-
-If the repository does not yet contain the bundled integration, run
-`/fullsend runs setup` first.
-
-```bash
-cd agentsview && make local                                  # auto-discovers from $TMPDIR/fullsend
-cd agentsview && make local DIR=/tmp/fullsend/agent-triage-3705-1234567890  # single run
-```
-
-Without `DIR`, the script auto-discovers runs from fullsend's default output location
-(`$TMPDIR/fullsend` on macOS). All `agent-*` subdirectories are discovered and imported.
+Importing Fullsend GitHub Actions artifacts and visualizing them in AgentsView is
+handled by the separate
+[`fs-sessions` and `agentsview` skills](https://github.com/durandom/fullsend-sessions).
+See that repository for supported session sources and setup instructions.
 
 ### 9. Troubleshooting (RHDH-specific)
 

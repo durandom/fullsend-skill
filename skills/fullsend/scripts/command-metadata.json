@@ -27,10 +27,6 @@
     "description": "Add or remove a label on a GitHub issue or PR. Use when managing fullsend labels like triaged, ready-to-code, fullsend-no-fix, or workspace labels.",
     "argumentHint": "<#issue> <add|remove> <label> [--repo owner/name]"
   },
-  "runs": {
-    "description": "Install or update the bundled AgentsView integration, fetch and convert fullsend run transcripts, import local runs, or start and stop the transcript viewer. Use when browsing, searching, or analyzing fullsend run history.",
-    "argumentHint": "[setup|fetch|up|local|viewer|down] [args]"
-  },
   "upgrade": {
     "description": "Upgrade Fullsend to a target release by updating the CLI, syncing scaffold-managed files, and checking customized files for drift. Use when bumping Fullsend or checking upgrade impact.",
     "argumentHint": "[version]"
