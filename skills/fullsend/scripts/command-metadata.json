@@ -1,42 +1,22 @@
 {
-  "validate": {
-    "description": "Diff customized harness and env files against upstream scaffold to catch drift. Use when checking fullsend config, comparing harness files, or verifying customizations before deploying.",
+  "orient": {
+    "description": "Discover how Fullsend is installed in this repository, including available agents, harnesses, skills, workflows, and configuration sources.",
     "argumentHint": "[repo-path]"
   },
-  "inspect": {
-    "description": "Investigate a fullsend agent run — pull together status, timing, agent output, and logs. Use when debugging a failed run, checking run results, or looking at a specific run by ID or issue number.",
-    "argumentHint": "<run-id | #issue>"
-  },
   "trigger": {
-    "description": "Post a fullsend slash command on a GitHub issue or PR to start an agent run. Use when triggering /fs-code, /fs-triage, /fs-review, /fs-fix, /fs-retro, /fs-prioritize, or /fs-debug.",
-    "argumentHint": "<agent> <#issue|#PR> [--repo owner/name] [--force]"
-  },
-  "debug": {
-    "description": "Run sandbox environment diagnostics — checks env vars, corepack, yarn, proxy, network, filesystem, and GCP credentials. Posts results as a comment on the issue.",
-    "argumentHint": "<#issue> [--repo owner/name]"
+    "description": "Trigger an agent exposed by the repository's Fullsend installation by posting a verified /fs-* command on an issue or pull request.",
+    "argumentHint": "<agent> <issue-or-PR> [instruction]"
   },
   "watch": {
-    "description": "Monitor a triggered fullsend run until completion, then auto-inspect it. Use when waiting for a fullsend agent run to finish.",
-    "argumentHint": "<#issue|run-id> [--repo owner/name]"
+    "description": "Monitor a Fullsend run associated with a run ID, issue, or pull request until it completes.",
+    "argumentHint": "<run-id | issue-or-PR>"
   },
-  "comment": {
-    "description": "Post a comment on a GitHub issue or PR. Use when adding context, instructions, or notes before or after a fullsend agent run.",
-    "argumentHint": "<#issue> <message> [--repo owner/name]"
-  },
-  "label": {
-    "description": "Add or remove a label on a GitHub issue or PR. Use when managing fullsend labels like triaged, ready-to-code, fullsend-no-fix, or workspace labels.",
-    "argumentHint": "<#issue> <add|remove> <label> [--repo owner/name]"
-  },
-  "upgrade": {
-    "description": "Upgrade Fullsend to a target release by updating the CLI, syncing scaffold-managed files, and checking customized files for drift. Use when bumping Fullsend or checking upgrade impact.",
-    "argumentHint": "[version]"
+  "inspect": {
+    "description": "Inspect a Fullsend run's GitHub Actions status, logs, artifacts, output, and likely failure cause.",
+    "argumentHint": "[run-id | issue-or-PR]"
   },
   "help": {
-    "description": "Explain the Fullsend agent pipeline, available agents, local deployment, and common onboarding workflows. Use when learning how Fullsend works or getting started.",
+    "description": "Answer a Fullsend user question from the current installation and link the relevant canonical upstream guide.",
     "argumentHint": "[topic]"
-  },
-  "custom-agents": {
-    "description": "Guide the creation of a custom standalone Fullsend agent, including scaffold, dispatch, harness, policy, and security wiring. Use when building or extending Fullsend agents.",
-    "argumentHint": "[agent name or goal]"
   }
 }
