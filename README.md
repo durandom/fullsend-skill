@@ -1,7 +1,8 @@
 # fullsend-skill
 
-The `/fullsend` skill for Claude Code — validate and debug Fullsend configuration,
-trigger and inspect agent runs, and manage upgrades.
+The `/fullsend` skill for developers working in a repository where Fullsend is
+already installed. It discovers that repository's actual agents, skills,
+workflows, and configuration sources before helping users operate agent runs.
 
 ## Install
 
@@ -9,7 +10,7 @@ trigger and inspect agent runs, and manage upgrades.
 npx skills add fullsend-ai/skill
 ```
 
-Then invoke the skill from any repository:
+Then invoke the skill from a repository where Fullsend is installed:
 
 ```text
 /fullsend
@@ -20,16 +21,11 @@ Then invoke the skill from any repository:
 
 | Command | Description |
 |---------|-------------|
-| `validate` | Diff customized harness/env files against upstream scaffold |
+| `orient` | Explain the installation, available agents, skills, and configuration sources |
 | `inspect` | Investigate a fullsend agent run — status, timing, output, logs |
-| `trigger` | Post a fullsend slash command to start an agent |
-| `watch` | Monitor a triggered run until completion, then auto-inspect |
-| `debug` | Run sandbox diagnostics |
-| `comment` | Post a comment on an issue or PR |
-| `label` | Add or remove a label on an issue or PR |
-| `upgrade` | Upgrade CLI, scaffold files, and dispatch workflows |
-| `help` | Onboarding companion — agent pipeline, local deployment overview |
-| `custom-agents` | Guide for building custom standalone agents |
+| `trigger` | Post a verified Fullsend slash command to start an available agent |
+| `watch` | Monitor a Fullsend run until completion |
+| `help` | Answer from local installation evidence and link canonical upstream docs |
 
 ## Usage
 
@@ -38,6 +34,11 @@ Then invoke the skill from any repository:
 ```
 
 Run `/fullsend` with no arguments for the command menu.
+
+Installation, administration, configuration changes, upgrades, and agent
+authoring are intentionally out of scope. The skill links to the canonical
+[Fullsend guides](https://github.com/fullsend-ai/fullsend/tree/main/docs/guides)
+for those tasks instead of duplicating them.
 
 ## Fullsend session history
 
