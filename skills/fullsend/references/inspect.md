@@ -32,6 +32,11 @@ logs, and artifacts available to the user.
 6. Separate infrastructure/workflow failures, sandbox/runtime failures, agent
    task failures, and successful runs with unexpected output. Base diagnoses on
    observed evidence and label inference explicitly.
+7. **Review agent sandbox context.** When inspecting a review run, remember that
+   the sandbox contains default branch HEAD (main), not the PR branch. The agent
+   reads the PR diff via API. If the user reports the agent ignored `AGENTS.md`
+   or project instructions added in the PR, check whether those changes have
+   merged to main — unmerged changes are invisible to the review agent's sandbox.
 7. Remove temporary downloads after analysis unless the user asked to keep them.
 
 Do not import sessions or start a transcript viewer; those capabilities are
