@@ -1,21 +1,42 @@
 # fullsend-skill
 
-The `/fullsend` skill for developers working in a repository where Fullsend is
-already installed. It discovers that repository's actual agents, skills,
-workflows, and configuration sources before helping users operate agent runs.
+A user-facing skill for operating Fullsend from a repository where it is
+already installed. It first discovers that repository's actual agents, skills,
+workflows, and configuration sources, then helps developers trigger, monitor,
+and investigate agent runs.
 
 ## Install
 
+Install the skill globally so it is available from every Fullsend-enabled
+repository:
+
 ```bash
-npx skills add fullsend-ai/skill
+npx skills add -g durandom/fullsend-skill \
+  --skill fullsend \
+  --agent claude-code codex \
+  -y
 ```
 
-Then invoke the skill from a repository where Fullsend is installed:
+Omit `--agent claude-code codex` to let the installer select from detected
+agents interactively. To install only in the current project, omit `-g`.
+
+Update a global installation with:
+
+```bash
+npx skills update -g fullsend
+```
+
+Then open a repository where Fullsend is installed and ask the agent to use
+Fullsend, for example:
 
 ```text
 /fullsend
+/fullsend orient
 /fullsend inspect 123456789
 ```
+
+In clients without slash-command syntax, use the same requests in plain
+language, such as `Use fullsend to inspect run 123456789`.
 
 ## Commands
 
@@ -29,11 +50,13 @@ Then invoke the skill from a repository where Fullsend is installed:
 
 ## Usage
 
-```
+```text
 /fullsend <command> [args]
 ```
 
-Run `/fullsend` with no arguments for the command menu.
+Run `/fullsend` with no arguments for the command menu. The skill begins from
+the current checkout and uses its local Fullsend configuration as the source of
+truth.
 
 Installation, administration, configuration changes, upgrades, and agent
 authoring are intentionally out of scope. The skill links to the canonical
